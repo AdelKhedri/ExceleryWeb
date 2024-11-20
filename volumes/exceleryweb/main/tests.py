@@ -1,13 +1,18 @@
-from django.test import TestCase
-from .models import Product
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.admin.sites import site
+from django.test import TestCase
 from django.conf import settings
+from .models import Product, Category
 import os
-from decimal import Decimal
 
 
 class ProductModelTest(TestCase):
     def setUp(self):
+        self.c = Category.objects.create(
+            title = 'books',
+            slug = 'books',
+            description = 'the book category.'
+        )
         Product.objects.create(
             name="Notebook",
             slug = 'notebook',
@@ -26,6 +31,17 @@ class ProductModelTest(TestCase):
     def test_final_price(self):
         self.assertEqual(float(self.p.final_price()), 20.00 + ((20.00/100)*4) - ((20.00/100)*10))
     
+    def test_category_allow_null(self):
+        self.assertIsNone(self.p.category)
+
     def tearDown(self):
         os.remove(settings.MEDIA_ROOT + 'images/products/newImage.jpg')
         return super().tearDown()
+
+
+class AdminRegisterTest(TestCase):
+    def test_models_registered(self):
+        models = [Product, Category]
+        for model in models:
+            with self.subTest(model=model):
+                self.assertIn(model, site._registry)
