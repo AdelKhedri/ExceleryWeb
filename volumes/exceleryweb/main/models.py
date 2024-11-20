@@ -52,3 +52,27 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PurchaseHistory(models.Model):
+    class PymentStatus(models.TextChoices):
+        pending = 'pending', 'Pending'
+        paid = 'paid', 'Paid'
+        failed = 'failed', 'Failed'
+
+    
+    class Meta:
+        ordering = ['product', 'category']
+        verbose_name = 'Purchase History'
+        verbose_name_plural = 'Purchase Historys'
+    
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    purchase_date = models.DateTimeField(auto_now_add=True)
+    payment_status = models.TextField(choices=PymentStatus.choices, default=PymentStatus.pending, max_length=7)
+
+    def __str__(self):
+        return str(self.product_id)
