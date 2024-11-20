@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category
+from .models import Product, Category, PurchaseHistory
 
 
 @admin.register((Product))
@@ -43,3 +43,9 @@ class CategoryAdmin(admin.ModelAdmin):
     @admin.display(empty_value="", description="description")
     def get_description(self, obj):
         return obj.description[:50] + ' ...' if len(obj.description) > 0 else ''
+    
+
+@admin.register(PurchaseHistory)
+class PurchaseHistoryRegister(admin.ModelAdmin):
+    list_display = ['product', 'category', 'price', 'user']
+    search_fields = ['product', 'user']

@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.admin.sites import site
 from django.test import TestCase
 from django.conf import settings
-from .models import Product, Category
+from .models import Product, Category, PurchaseHistory
 import os
 
 
@@ -41,7 +41,7 @@ class ProductModelTest(TestCase):
 
 class AdminRegisterTest(TestCase):
     def test_models_registered(self):
-        models = [Product, Category]
+        models = [Product, Category, PurchaseHistory]
         for model in models:
             with self.subTest(model=model):
                 self.assertIn(model, site._registry)
