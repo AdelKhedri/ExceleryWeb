@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category, PurchaseHistory
+from .models import Product, Category, PurchaseHistory, File
 
 
 @admin.register((Product))
@@ -49,3 +49,10 @@ class CategoryAdmin(admin.ModelAdmin):
 class PurchaseHistoryRegister(admin.ModelAdmin):
     list_display = ['product', 'category', 'price', 'user']
     search_fields = ['product', 'user']
+
+
+@admin.register(File)
+class FileRegister(admin.ModelAdmin):
+    list_display = ['name', 'status', 'type', 'size']
+    search_fields = ['name']
+    list_filter = ['type', 'status']

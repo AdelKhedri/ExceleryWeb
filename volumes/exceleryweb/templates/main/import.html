@@ -1,0 +1,205 @@
+{% extends 'main/base.html' %}
+{% block content %}
+                <div class="bg-white rounded-md">
+                    <div class="flex py-2">
+                        <button id="uploading_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', in_proccessing: 'in_processing_btn', pending: 'pending_btn'}, {uploading: 'uploading_btn'})" class="flex items-center hover:bg-gray-300 hover:rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                            <p>بخش آپلود</p>
+                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.all_files }}</span>
+                        </button>
+                        <button id="pending_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', uploading: 'uploading_btn', in_proccessing: 'in_processing_btn'}, {pending: 'pending_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                            <p>در صف انتظار</p>
+                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.pending }}</span>
+                        </button>
+                        <button id="in_processing_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {in_proccessing: 'in_processing_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                            <p>در حال انجام</p>
+                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.in_processing }}</span>
+                        </button>
+                        <button id="success_btn" onclick="toggleTabElements({in_proccessing: 'in_processing_btn', failed: 'failed_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {success: 'success_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                            <p>انجام شده</p>
+                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.successfull }}</span>
+                        </button>
+                        <button id="failed_btn" onclick="toggleTabElements({in_proccessing: 'in_processing_btn', success: 'success_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {failed: 'failed_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                            <p>نا موفق</p>
+                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.failed }}</span>
+                        </button>
+                    </div>
+                </div>
+                
+
+                <div class="pb-1 bg-gradient-to-t from-sky-400 to-cyan-200">
+                    <div id="uploading">
+                        <div class="flex flex-row justify-center w-full p-3">
+                            <label for="{{form.file.id_for_label}}" class="flex justify-center w-full lg:w-7/12 sm:w-5/6 rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50 outline outline-4 outline-offset-1 outline-sky-200">
+                                <div class="flex flex-col py-10">
+                                    <i class="fa-regular fa-file-arrow-up text-blue-500 mx-auto text-2xl p-[14px] px-[17px] w-fit bg-blue-100 rounded-full"></i>
+                                    <p class="mt-4"><span class="text-blue-700 font-bold">برای اپلود فایل</span> ضربه بزنید یا درگ اند رداپ کنید</p>
+                                    <p>فرمت های پشتیبانی شده:‌ <span class="bg-red-200 px-1 rounded-full border border-red-400">xls</span> <span class="bg-red-200 px-1 rounded-full border border-red-400">xlsx</span> <span class="bg-red-200 px-1 rounded-full border border-red-400">csv</span></p>
+                                </div>
+                                {% csrf_token %}
+                                {{ form.file }}
+                                <!-- <input class="hidden" type="file" name="" id="upload-file"> -->
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="hidden" id="pending">
+                        {% for file in files %}
+                            {% if file.status == 'pending' %}
+                                <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
+                                    <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                        <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
+                                        <div class="w-full mr-3">
+                                            <div class="flex items-center justify-between my-2">
+                                                <p class="text-gray-800">{{ file.name }}</p>
+                                                <i class="fa-sharp fa-solid fa-circle-check text-green-500"></i>
+                                            </div>
+                                            <div class="w-full h-2 rounded-2xl bg-gray-200 ">
+                                                <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-orange-500 rounded-2xl"></div>
+                                            </div>
+                                            <div id="status" class="flex justify-between mt-1 mb-3">
+                                                <p class="text-yellow-600">{{ file.get_status_display }}</p>
+                                                <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% empty %}
+                            <p>هیچ فایلی با وصعیت در صف انتظار وجود نداره.</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- proccessing -->
+                    <div class="hidden" id="in_proccessing">
+                        {% for file in files %}
+                            {% if file.status == 'processing' or file.status == 'retry' %}
+                                <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
+                                    <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                        <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
+                                        <div class="w-full mr-3">
+                                            <div class="flex items-center justify-between my-2">
+                                                <p class="text-gray-800">{{ file.name }}</p>
+                                                <i class="fa-sharp fa-solid fa-circle-check text-green-500"></i>
+                                            </div>
+                                            <div class="w-full h-2 rounded-2xl bg-gray-200 ">
+                                                <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-orange-500 rounded-2xl"></div>
+                                            </div>
+                                            <div id="status" class="flex justify-between mt-1 mb-3">
+                                                <p class="text-yellow-600">{{ file.get_status_display }}</p>
+                                                <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% empty %}
+                            <p>هیچ فایلی با وصعیت در حال انجام وجود نداره.</p>
+                        {% endfor %}
+                    </div>
+
+                    <span class="h-3"></span>
+
+                    <div class="hidden" id="success">
+                        {% for file in files %}
+                            {% if file.status == 'success' %}
+                            <div class="flex justify-between xl:w-8/12 lg:w-9/12 md:w-10/12 w-full mx-auto p-1 sm:p-3 py-5 outline outline-4 outline-sky-200 bg-white rounded-lg my-2 hover:bg-green-200 ">
+                                <div class="flex items-center">
+                                    <i class="fa-solid fa-paperclip font-thin text-gray-400"></i>
+                                    <p class="mx-2">{{ file.name }}</p>
+                                    <span class="text-gray-500">{{ file.size|filesizeformat }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <a class="ml-1 sm:ml-2 text-blue-600" href="http://127.0.0.1:8000/createdata/ecommerce-history/convert/excel">Download</a>
+                                    <span class="border-l-2 border-gray-400 h-5"></span>
+                                    <a class="mr-1 sm:mr-2 text-red-600 line-through" href="">show data</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% empty %}
+                            <p>فایلی با وضعیت موفقیت آمیز وجود ندارد.</p>
+                        {% endfor %}
+                    </div>
+
+                    <hr class="xl:w-8/12 lg:w-9/12 md:w-10/12 w-full mx-auto">
+
+                    <div class="hidden" id="failed">
+                        {% for file in files %}
+                            {% if file.status == 'failed' %}
+                            <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
+                                <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                    <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
+                                    <div class="w-full mr-3">
+                                        <div class="flex items-center justify-between my-2">
+                                            <p class="text-gray-800">{{ file.name }}</p>
+                                            <i class="fa-sharp fa-solid fa-trash text-red-600"></i>
+                                        </div>
+                                        <div class="w-full h-2 rounded-2xl bg-gray-200 ">
+                                            <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-red-600 rounded-2xl"></div>
+                                        </div>
+                                        <div id="status" class="flex justify-between mt-1 mb-3">
+                                            <p class="text-red-600">{{ file.get_status_display }}</p>
+                                            <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% empty %}
+                            <p>هیچ فایلی با وضعیت ناموفق وجود ندارد</p>
+                        {% endfor %}
+                    </div>
+
+                    <hr class="xl:w-8/12 lg:w-9/12 md:w-10/12 w-full mx-auto">
+                    
+                    {% if show_pagination %}
+                    <div class="flex items-center justify-center">
+                        <div id="pagination" class="hiddens flex flex-row mx-auto justify-center bg-slate-200/85 p-3 rounded-lg mt-5">
+                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                <i class="fa-solid fas fa-chevron-right"></i>
+                            </a>
+                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                1
+                            </a>
+                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                2
+                            </a>
+                            <p class="p-2.5 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                ...
+                            </p>
+                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                9
+                            </a>
+                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                10
+                            </a>
+                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class=" h-5"></div>
+                </div>
+                <div id="error-section">
+
+                </div>
+                <script>
+                    let indexFiles = []
+                    let errorSection = document.getElementById('error-section');
+                    let file_field = document.getElementById('id_file');
+                    const file_explore = document.getElementById('file-upload-explore');
+
+                    file_field.addEventListener('change', function(event) {
+                        const file = event.target.files[0];
+                        if (!file) return;
+                        let file_error = validateFile(file);
+                        
+                        if (file_error.has_error) {
+                            errorSection.innerHTML = `<p class="text-red-500 text-center">${ file_error.msg }</p>`;
+                        } else {
+                            uploadFile(file, getUniqeueIndex(), '{{ csrf_token }}');
+                        }
+                        
+                    })
+                </script>
+{% endblock %}

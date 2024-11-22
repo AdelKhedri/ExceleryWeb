@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .validations import validate_file_size
 
 
 class Category(models.Model):
@@ -76,3 +77,34 @@ class PurchaseHistory(models.Model):
 
     def __str__(self):
         return str(self.product_id)
+
+
+class File(models.Model):
+    class FileStatus(models.TextChoices):
+        in_queue = 'pending', "Waiting in line ..."
+        in_processing = 'processing', 'In processing ...'
+        failed = 'failed', 'Processing encountered an error'
+        success = 'success', 'processing was successful'
+        retry = 'retry', 'Try again'
+    
+
+    class FileType(models.TextChoices):
+        excel = 'excel', 'Excel'
+        csv = 'csv', 'Csv'
+
+    class Meta:
+        ordering = []
+    
+
+    name = models.CharField(max_length=300)
+    file = models.FileField(upload_to='files/', validators=[validate_file_size])
+    size = models.FloatField()
+    type = models.TextField(max_length=10, choices=FileType.choices)
+    status = models.CharField(max_length=10, choices=FileStatus.choices)
+    start_processing = models.DateTimeField(blank=True, null=True)
+    end_processing = models.DateTimeField(blank=True, null=True)
+    row_counts = models.IntegerField(blank=True, null=True)
+    processed_status = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}: {self.get_status_display()}'
