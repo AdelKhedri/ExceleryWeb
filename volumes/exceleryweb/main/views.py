@@ -7,9 +7,10 @@ from .mixin import RedirecAuthenticatedUser
 from .models import File
 from .forms import FileForm
 from django.db.models import Count, Q
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import redirect
 from .forms import LoginForm, SignupForm
+from django.urls import reverse
 
 
 class ImportFileView(LoginRequiredMixin, ListView):
@@ -62,7 +63,7 @@ class LoginView(RedirecAuthenticatedUser, View):
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            return redirect('/')
+            return redirect(reverse('main:home'))
         except:
             self.context.update({'msg': 'register error'})
         return render(request, self.template_name, self.context)
@@ -83,7 +84,13 @@ class SignupView(RedirecAuthenticatedUser, View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('/')
+            return redirect(reverse('main:home'))
         else:
             self.context.update({'form': form})
         return render(request, self.template_name, self.context)
+
+
+class LogoutView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect(reverse('main:login'))

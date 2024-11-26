@@ -91,3 +91,19 @@ class TestSignupView(TestCase):
         self.assertFalse(response.wsgi_request.user.is_authenticated)
         self.assertIn('form', response.context)
         self.assertTrue('form', response.context['form'].is_bound)
+
+
+class TestLogout(TestCase):
+    def setUp(self):
+        User.objects.create_user(username='user1', password='test')
+    
+    def test_logout_successful(self):
+        response = self.client.post(reverse('main:login'), {
+            'username': 'user1',
+            'password': 'test'
+        })
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+        response = self.client.get(reverse('main:logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('main:login'))
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
