@@ -1,11 +1,15 @@
 import os
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixin import RedirecAuthenticatedUser
 from .models import File
 from .forms import FileForm
 from django.db.models import Count, Q
+from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect
+from .forms import LoginForm
 
 
 class ImportFileView(LoginRequiredMixin, ListView):
@@ -41,3 +45,24 @@ class ImportFileView(LoginRequiredMixin, ListView):
             for error, field in form.errors.items():
                 error_dic[error] = field
             return JsonResponse(error_dic, safe=True)
+
+
+class LoginView(RedirecAuthenticatedUser, View):
+    template_name = 'main/auth.html'
+    context = {'page': 'login', 'form': LoginForm()}
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            form = LoginForm(request.POST)
+            form.is_valid()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            login(request, user)
+            return redirect('/')
+        except:
+            self.context.update({'msg': 'register error'})
+        return render(request, self.template_name, self.context)

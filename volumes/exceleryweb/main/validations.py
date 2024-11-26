@@ -1,7 +1,4 @@
 from django.core.exceptions import ValidationError
-import os
-import csv, openpyxl
-import openpyxl.workbook
 
 
 def validate_file_size(file):

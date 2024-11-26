@@ -1,0 +1,75 @@
+<nav>
+    <div class="container mx-auto flex justify-between px-3 py-2 bg-gray-200 rounded-md">
+        <a class="flex items-center mr-1 font-bold text-orange-600">
+            <img class="max-w-8 max-h-8" src="./images/file-engine.png" alt="">
+            خانه
+        </a>
+        <div class="hidden md:flex gap-x-5 items-center text-gray-600">
+            <a class="flex items-center hover:text-gray-900" href="">
+                <i class="fa-regular fa-house"></i>
+                <span class="mr-1">خانه</span>
+            </a>
+            <a class="flex items-center hover:text-gray-900" href="">
+                <i class="fa-brands fa-github"></i>
+                <span class="mr-1">گیت هاب</span>
+            </a>
+            <a class="flex items-center hover:text-gray-900" href="">
+                <i class="fa-solid fa-file-circle-info"></i>
+                <span class="mr-1">درباره</span>
+            </a>
+            <a class="flex items-center hover:text-gray-900" href="">
+                <i class="fa-solid fa-arrow-right-to-bracket mt-2"></i>
+                <span class="mr-1">خروج</span>
+            </a>
+        </div>
+        <button onclick="toggleElementId('user-simple-menu');toggleHideElementId('user-menu-chevron-down');toggleHideElementId('user-menu-chevron-up')" class="hidden md:flex items-center border-2 border-gray-400 p-1 rounded-md hover:bg-yellow-300 hover:border-yellow-500">
+            <i id="user-menu-chevron-down" class="fa-solid fa-chevron-down ml-1" style="display: none;"></i>
+            <i id="user-menu-chevron-up" class="fa-solid fa-chevron-up ml-1"></i>
+            <span class="ml-1 font-bold text-stone-600">مهرداد محمودی نژاد</span>
+            <img class="w-10 h-10 rounded-full" src="./images/user-default-icon.png" alt="">
+        </button>
+        <ul id="user-simple-menu" class="hidden absolute flex flex-col gap-y-1 mt-1 px-2 py-1 min-w-48 bg-white border-2 rounded-md">
+            <li class="hover:bg-amber-200 hover:text-red-600 px-1 rounded-md pb-1"><a href="">ایتم یک</a></li>
+            <li class="hover:bg-amber-200 hover:text-red-600 px-1 rounded-md pb-1"><a href="">ایتم دو</a></li>
+            <li class="hover:bg-amber-200 hover:text-red-600 px-1 rounded-md pb-1"><a href="">ایتم سه</a></li>
+            <li class="hover:bg-amber-200 hover:text-red-600 px-1 rounded-md pb-1"><a href="">ایتم چهار</a></li>
+        </ul>
+
+        <button onclick="toggleElementId('mobile-menu')" class="md:hidden">
+            <i class="fa-solid fa-bars"></i>
+            <!-- <i class="fa-solid fa-x"></i> -->
+        </button>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden fixed container mx-auto inset-0 bg-gray-200 rounded-md">
+            <div class="flex justify-between px-3 py-2">
+                <a class="flex items-center mr-1 font-bold text-orange-600">
+                    <img class="max-w-8 max-h-8" src="./images/file-engine.png" alt="">
+                    خانه
+                </a>
+                <button onclick="toggleElementId('mobile-menu')" class="md:hidden">
+                    <i class="fa-solid fa-bars"></i>
+                    <!-- <i class="fa-solid fa-x"></i> -->
+                </button>
+            </div>
+            <div class="m-4 text-gray-600 border-y-2 py-2 border-gray-400">
+                <a class="flex items-center hover:bg-yellow-200 p-2 rounded-md hover:text-gray-900" href="">
+                    <i class="fa-regular fa-house"></i>
+                    <span class="mr-2">خانه</span>
+                </a>
+                <a class="flex items-center hover:bg-yellow-200 p-2 rounded-md hover:text-gray-900" href="">
+                    <i class="fa-brands fa-github"></i>
+                    <span class="mr-2">گیت هاب</span>
+                </a>
+                <a class="flex items-center hover:bg-yellow-200 p-2 rounded-md hover:text-gray-900" href="">
+                    <i class="fa-solid fa-file-circle-info"></i>
+                    <span class="mr-2">درباره</span>
+                </a>
+                <a class="flex items-center hover:bg-yellow-200 p-2 rounded-md hover:text-gray-900" href="">
+                    <i class="fa-solid fa-arrow-right-to-bracket mt-2"></i>
+                    <span class="mr-2">خروج</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
