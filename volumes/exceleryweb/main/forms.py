@@ -5,6 +5,10 @@ from .models import File
 from .validations import uniqe_username
 
 
+input_attrs = {'class': 'p-1 rounded-lg border border-orange-400'}
+checkbox_attrs = {'class': 'appearance-none me-1 rounded-md h-5 w-5 border-2  border-gray-400 checked:bg-blue-500'}
+
+
 class FileForm(forms.ModelForm):
     class Meta:
         model = File
@@ -15,8 +19,6 @@ class FileForm(forms.ModelForm):
         }
 
 
-input_attrs = {'class': 'p-1 rounded-lg border border-orange-400'}
-checkbox_attrs = {'class': 'appearance-none me-1 rounded-md h-5 w-5 border-2  border-gray-400 checked:bg-blue-500'}
 class LoginForm(forms.Form):
     username = forms.CharField(label='نام کاربری' ,widget=forms.TextInput(attrs=input_attrs))
     password = forms.CharField(label='پسورد' ,widget=forms.PasswordInput(attrs=input_attrs))
