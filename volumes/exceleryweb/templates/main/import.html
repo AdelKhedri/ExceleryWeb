@@ -1,5 +1,8 @@
 {% extends 'main/base.html' %}
+{% include 'components/nav-bar.html' %}
 {% block content %}
+<div class="flex flex-row gap-3 mt-3">
+                {% include 'components/sidbar.html' %}
                 <div class="bg-white rounded-md">
                     <div class="flex py-2">
                         <button id="uploading_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', in_proccessing: 'in_processing_btn', pending: 'pending_btn'}, {uploading: 'uploading_btn'})" class="flex items-center hover:bg-gray-300 hover:rounded-md sm:m-1 sm:px-2 px-1 py-1">
@@ -204,4 +207,5 @@
                         
                     })
                 </script>
+            </div>
 {% endblock %}
