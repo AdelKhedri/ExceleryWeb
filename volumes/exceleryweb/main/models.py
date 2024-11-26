@@ -9,6 +9,7 @@ class Category(models.Model):
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    from_file = models.ForeignKey('File', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Category'
@@ -32,6 +33,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='images/products/', blank=True, null=True)
+    from_file = models.ForeignKey('File', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         ordering = ['name', 'category']
@@ -74,6 +76,7 @@ class PurchaseHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     purchase_date = models.DateTimeField(auto_now_add=True)
     payment_status = models.TextField(choices=PymentStatus.choices, default=PymentStatus.pending, max_length=7)
+    from_file = models.ForeignKey('File', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return str(self.product_id)
@@ -99,12 +102,15 @@ class File(models.Model):
     name = models.CharField(max_length=300)
     file = models.FileField(upload_to='files/', validators=[validate_file_size])
     size = models.FloatField()
-    type = models.TextField(max_length=10, choices=FileType.choices)
-    status = models.CharField(max_length=10, choices=FileStatus.choices)
+    type = models.TextField(max_length=10, blank=True, choices=FileType.choices)
+    status = models.CharField(max_length=10, default='pending', choices=FileStatus.choices)
     start_processing = models.DateTimeField(blank=True, null=True)
     end_processing = models.DateTimeField(blank=True, null=True)
     row_counts = models.IntegerField(blank=True, null=True)
     processed_status = models.IntegerField(blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    error_messages = models.TextField(max_length=500, blank=True)
+
 
     def __str__(self):
         return f'{self.name}: {self.get_status_display()}'
