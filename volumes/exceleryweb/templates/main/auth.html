@@ -2,7 +2,7 @@
 {% load static custom_filters %}
 {% block content %}
 <div class="container mx-auto mt-4">
-    <div class="xl:w-3/12 md:w-1/2 w-full mx-auto">
+    <div class="xl:w-3/12 lg:w-5/12 md:w-1/2 w-full mx-auto">
         <form action="" method="post" class="rounded-xl bg-slate-200 p-3 shadow md">
             {% csrf_token %}
             <p class="text-center">{% if page == 'login' %}ورود{% else%}ثبت نام{% endif %}</p>
