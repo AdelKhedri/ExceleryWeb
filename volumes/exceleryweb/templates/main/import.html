@@ -40,54 +40,55 @@
                                 <!-- <input class="hidden" type="file" name="" id="upload-file"> -->
                             </label>
                         </div>
+                        <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
+                        </div>
                     </div>
 
                     <div class="hidden" id="pending">
+                        <div class="flex flex-col items-center p-3 justify-center">
                         {% for file in files %}
                             {% if file.status == 'pending' %}
-                                <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
-                                    <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
-                                        <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
-                                        <div class="w-full mr-3">
-                                            <div class="flex items-center justify-between my-2">
-                                                <p class="text-gray-800">{{ file.name }}</p>
-                                                <i class="fa-sharp fa-solid fa-circle-check text-green-500"></i>
-                                            </div>
-                                            <div class="w-full h-2 rounded-2xl bg-gray-200 ">
-                                                <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-orange-500 rounded-2xl"></div>
-                                            </div>
-                                            <div id="status" class="flex justify-between mt-1 mb-3">
-                                                <p class="text-yellow-600">{{ file.get_status_display }}</p>
-                                                <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
-                                            </div>
-                                        </div>
+                            <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
+                                <div class="w-full mr-3">
+                                    <div class="flex items-center justify-between my-2">
+                                        <p class="text-gray-800">{{ file.name }}</p>
+                                        <i class="fa-sharp fa-solid fa-circle-check text-green-500"></i>
+                                    </div>
+                                    <div class="w-full h-2 rounded-2xl bg-gray-200 ">
+                                        <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-orange-500 rounded-2xl"></div>
+                                    </div>
+                                    <div id="status" class="flex justify-between mt-1 mb-3">
+                                        <p class="text-yellow-600">{{ file.get_status_display }}</p>
+                                        <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
                                     </div>
                                 </div>
+                            </div>
                             {% endif %}
                         {% empty %}
-                            <p>هیچ فایلی با وصعیت در صف انتظار وجود نداره.</p>
+                                <p>هیچ فایلی با وصعیت در صف انتظار وجود نداره.</p>
                         {% endfor %}
+                        </div>
                     </div>
 
                     <!-- proccessing -->
                     <div class="hidden" id="in_proccessing">
+                        <div class="flex flex-col items-center p-3 justify-center">
                         {% for file in files %}
                             {% if file.status == 'processing' or file.status == 'retry' %}
-                                <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
-                                    <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
-                                        <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
-                                        <div class="w-full mr-3">
-                                            <div class="flex items-center justify-between my-2">
-                                                <p class="text-gray-800">{{ file.name }}</p>
-                                                <i class="fa-sharp fa-solid fa-circle-check text-green-500"></i>
-                                            </div>
-                                            <div class="w-full h-2 rounded-2xl bg-gray-200 ">
-                                                <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-orange-500 rounded-2xl"></div>
-                                            </div>
-                                            <div id="status" class="flex justify-between mt-1 mb-3">
-                                                <p class="text-yellow-600">{{ file.get_status_display }}</p>
-                                                <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
-                                            </div>
+                                <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                    <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
+                                    <div class="w-full mr-3">
+                                        <div class="flex items-center justify-between my-2">
+                                            <p class="text-gray-800">{{ file.name }}</p>
+                                            <i class="fa-sharp fa-solid fa-circle-check text-green-500"></i>
+                                        </div>
+                                        <div class="w-full h-2 rounded-2xl bg-gray-200 ">
+                                            <div style="width: {{ file.processed_status|default:0}}%;" class="h-2 bg-orange-500 rounded-2xl"></div>
+                                        </div>
+                                        <div id="status" class="flex justify-between mt-1 mb-3">
+                                            <p class="text-yellow-600">{{ file.get_status_display }}</p>
+                                            <p id="status-100" class="text-sm">{{ file.processed_status|default:0 }}%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -95,6 +96,7 @@
                         {% empty %}
                             <p>هیچ فایلی با وصعیت در حال انجام وجود نداره.</p>
                         {% endfor %}
+                        </div>
                     </div>
 
                     <span class="h-3"></span>
@@ -125,7 +127,7 @@
                     <div class="hidden" id="failed">
                         {% for file in files %}
                             {% if file.status == 'failed' %}
-                            <div id="file-upload-explore" class="flex flex-col items-center p-3 justify-center">
+                            <div class="flex flex-col items-center p-3 justify-center">
                                 <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
                                     <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
                                     <div class="w-full mr-3">
@@ -184,11 +186,11 @@
 
                 </div>
                 <script>
+
                     let indexFiles = []
                     let errorSection = document.getElementById('error-section');
                     let file_field = document.getElementById('id_file');
                     const file_explore = document.getElementById('file-upload-explore');
-
                     file_field.addEventListener('change', function(event) {
                         const file = event.target.files[0];
                         if (!file) return;

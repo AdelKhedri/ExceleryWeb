@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css" >
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-duotone-solid.css" >
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-thin.css" >
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-solid.css" >
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-regular.css" >
+
+      <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-light.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body dir="rtl" class="dark:bg-gray-500">
+    <!-- Menu -->
+    {% include 'components/nav-bar.html' %}
+    <!-- Content -->
+    <div class="container mx-auto mt-4">
+        <div class="xl:w-3/12 md:w-1/2 w-full mx-auto">
+            <form action="" method="post" class="rounded-xl bg-slate-200 p-3 shadow md">
+                {% csrf_token %}
+                <p class="text-center">{% if page == 'login' %}ورود{% else%}ثبت نام{% endif %}</p>
+                {% if page == 'login' and msg == 'register error' %}
+                <p class="notif-red mt-1 px-1 pb-2">نام کاربری اشتباه است</p>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="flex justify-between mt-3">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                
+                <button type="submit" class="px-2 pb-3 pt-1 mt-3 bg-green-500 rounded-lg">{% if page == 'login' %}ورود{% else %}ثبت نام{% endif %}</button>
+                <div class="flex justify-center my-3">
+                    <a href="{% if page == 'login' %}/signup/{% else %}/login/{% endif %}" class="py-2 px-3 text-blue-600 hover:underline rounded-r-lg">{% if page == 'login' %}ثبت نام{% else %}ورورد{% endif %}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="./js/scripts.js"></script>
+</body>
+
+</html>

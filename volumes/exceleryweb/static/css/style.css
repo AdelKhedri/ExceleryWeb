@@ -2537,6 +2537,9 @@ th {
   .md\:w-full {
     width: 100%;
   }
+  .md\:w-1\/2 {
+    width: 50%;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2572,5 +2575,8 @@ th {
 
   .xl\:w-8\/12 {
     width: 66.666667%;
+  }
+  .xl\:w-3\/12 {
+    width: 25%;
   }
 }
