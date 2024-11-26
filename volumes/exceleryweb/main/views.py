@@ -9,7 +9,7 @@ from .forms import FileForm
 from django.db.models import Count, Q
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 
 
 class ImportFileView(LoginRequiredMixin, ListView):
@@ -65,4 +65,25 @@ class LoginView(RedirecAuthenticatedUser, View):
             return redirect('/')
         except:
             self.context.update({'msg': 'register error'})
+        return render(request, self.template_name, self.context)
+
+
+class SignupView(RedirecAuthenticatedUser, View):
+    template_name = 'main/auth.html'
+    context = {
+        'page': 'signup',
+        'form': SignupForm()
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+    
+    def post(self, request, *args, **kwargs):
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('/')
+        else:
+            self.context.update({'form': form})
         return render(request, self.template_name, self.context)
