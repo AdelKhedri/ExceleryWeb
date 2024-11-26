@@ -2,28 +2,28 @@
 {% include 'components/nav-bar.html' %}
 {% block content %}
 <div class="flex flex-row gap-3 mt-3">
-                {% include 'components/sidbar.html' %}
+                {% include 'components/sidbar.html' %}  
                 <div class="bg-white rounded-md">
                     <div class="flex py-2">
-                        <button id="uploading_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', in_proccessing: 'in_processing_btn', pending: 'pending_btn'}, {uploading: 'uploading_btn'})" class="flex items-center hover:bg-gray-300 hover:rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                        <button id="uploading_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', in_proccessing: 'in_processing_btn', pending: 'pending_btn'}, {uploading: 'uploading_btn'})" class="tab-btn">
                             <p>بخش آپلود</p>
-                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.all_files }}</span>
+                            <span class="tab-btn-span">{{ files_status.all_files }}</span>
                         </button>
-                        <button id="pending_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', uploading: 'uploading_btn', in_proccessing: 'in_processing_btn'}, {pending: 'pending_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                        <button id="pending_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', uploading: 'uploading_btn', in_proccessing: 'in_processing_btn'}, {pending: 'pending_btn'})" class="tab-btn border-s-2">
                             <p>در صف انتظار</p>
-                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.pending }}</span>
+                            <span class="tab-btn-span">{{ files_status.pending }}</span>
                         </button>
-                        <button id="in_processing_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {in_proccessing: 'in_processing_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                        <button id="in_processing_btn" onclick="toggleTabElements({success: 'success_btn', failed: 'failed_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {in_proccessing: 'in_processing_btn'})" class="tab-btn border-s-2">
                             <p>در حال انجام</p>
-                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.in_processing }}</span>
+                            <span class="tab-btn-span">{{ files_status.in_processing }}</span>
                         </button>
-                        <button id="success_btn" onclick="toggleTabElements({in_proccessing: 'in_processing_btn', failed: 'failed_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {success: 'success_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                        <button id="success_btn" onclick="toggleTabElements({in_proccessing: 'in_processing_btn', failed: 'failed_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {success: 'success_btn'})" class="tab-btn border-s-2">
                             <p>انجام شده</p>
-                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.successfull }}</span>
+                            <span class="tab-btn-span">{{ files_status.successfull }}</span>
                         </button>
-                        <button id="failed_btn" onclick="toggleTabElements({in_proccessing: 'in_processing_btn', success: 'success_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {failed: 'failed_btn'})" class="flex items-center border-s-2 hover:bg-gray-300 rounded-md sm:m-1 sm:px-2 px-1 py-1">
+                        <button id="failed_btn" onclick="toggleTabElements({in_proccessing: 'in_processing_btn', success: 'success_btn', uploading: 'uploading_btn', pending: 'pending_btn'}, {failed: 'failed_btn'})" class="tab-btn border-s-2">
                             <p>نا موفق</p>
-                            <span class="mr-2 bg-yellow-200 rounded-full px-1 py-0 h-fit text-xs">{{ files_status.failed }}</span>
+                            <span class="tab-btn-span">{{ files_status.failed }}</span>
                         </button>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         <div class="flex flex-col items-center p-3 justify-center">
                         {% for file in files %}
                             {% if file.status == 'pending' %}
-                            <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                            <div class="flex proccessing-file">
                                 <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
                                 <div class="w-full mr-3">
                                     <div class="flex items-center justify-between my-2">
@@ -79,7 +79,7 @@
                         <div class="flex flex-col items-center p-3 justify-center">
                         {% for file in files %}
                             {% if file.status == 'processing' or file.status == 'retry' %}
-                                <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                <div class="flex proccessing-file">
                                     <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
                                     <div class="w-full mr-3">
                                         <div class="flex items-center justify-between my-2">
@@ -131,7 +131,7 @@
                         {% for file in files %}
                             {% if file.status == 'failed' %}
                             <div class="flex flex-col items-center p-3 justify-center">
-                                <div class="flex items-center bg-white xl:w-10/12 lg:w-4/5 md:w-10/12 w-full px-3 py-1 rounded-3xl outline outline-4 outline-sky-200 shadow-md shadow-gray-800 my-1">
+                                <div class="flex proccessing-file">
                                     <i class="fa-regular fa-file-arrow-up text-blue-700 text-xl p-[12px] px-[15px] w-fit bg-blue-100 rounded-full"></i>
                                     <div class="w-full mr-3">
                                         <div class="flex items-center justify-between my-2">
@@ -159,25 +159,25 @@
                     {% if show_pagination %}
                     <div class="flex items-center justify-center">
                         <div id="pagination" class="hiddens flex flex-row mx-auto justify-center bg-slate-200/85 p-3 rounded-lg mt-5">
-                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <a href="" class="pagination-btn">
                                 <i class="fa-solid fas fa-chevron-right"></i>
                             </a>
-                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <a href="" class="pagination-btn">
                                 1
                             </a>
-                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <a href="" class="pagination-btn">
                                 2
                             </a>
-                            <p class="p-2.5 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <p class="pagination-btn">
                                 ...
                             </p>
-                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <a href="" class="pagination-btn">
                                 9
                             </a>
-                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <a href="" class="pagination-btn">
                                 10
                             </a>
-                            <a href="" class="p-3 py-1 rounded-lg border mx-1 bg-white hover:bg-gray-200 hover:border-gray-400">
+                            <a href="" class="pagination-btn">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </a>
                         </div>
