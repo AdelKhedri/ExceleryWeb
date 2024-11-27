@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.admin.sites import site
 from django.test import TestCase
 from django.conf import settings
-from .models import Product, Category, PurchaseHistory
+from main.models import Product, Category, PurchaseHistory
 import os
 
 
@@ -21,7 +21,7 @@ class ProductModelTest(TestCase):
             price = 20.00,
             tax_percentage = 4,
             discount_percentage = 10,
-            image = SimpleUploadedFile('newImage.jpg', content=open(str(settings.BASE_DIR) + '/main/newImage.jpg', 'rb').read(), content_type='image/png')
+            image = SimpleUploadedFile('newImage.jpg', content=open(str(settings.BASE_DIR) + '/main/tests/newImage.jpg', 'rb').read(), content_type='image/png')
         )
         self.p = Product.objects.get(name='Notebook')
     
