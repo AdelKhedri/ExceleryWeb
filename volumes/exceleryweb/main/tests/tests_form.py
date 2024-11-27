@@ -1,4 +1,4 @@
-from .forms import SignupForm
+from main.forms import SignupForm
 from django.test import TestCase
 from django.contrib.auth.models import User
 
